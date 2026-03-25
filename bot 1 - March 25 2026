@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+import os, sys
+sys.path.append("/usr/lib")
+import _kipr as k
+
+k.enable_servos()
+
+#All are from looking from back of bot
+
+#motor port 2 is left motor
+#motor port 3 is right motor
+
+#pom sweeper is servo port 2
+
+#left grabber is servo port 1, 0 is bottom position, 2047 is top position
+#right grabber is servo port 0, 0 is top position, 2047 is bottom position
+
+### WHEEL MOVEMENT ###
+def forward(speed, msleep):
+	k.motor(2, speed)
+	k.motor(3, speed)
+	k.msleep(msleep)
+    
+def backwards(speed, msleep):
+	k.motor(2, -speed)
+	k.motor(3, -speed)
+	k.msleep(msleep)
+    
+def right(speed, msleep):
+	k.motor(2, speed)
+	k.motor(3,  0)
+	k.msleep(msleep)
+    
+def left(speed, msleep):
+	k.motor(2, 0)
+	k.motor(3, speed)
+	k.msleep(msleep)
+
+### POM SWEEPER ###
+def pom_sweep():
+	k.set_servo_position(2, 980)
+	k.msleep(1000)
+	k.set_servo_position(2, 2047)
+	k.msleep(1000)
+    
+### BOX COLLECTOR ###
+def grab_box():
+	k.set_servo_position(0, 2047)
+	k.set_servo_position(1, 0)
+    
+def drop_box():
+	k.set_servo_position(0, 0)
+	k.set_servo_position(1, 2047)
+    
+### MAIN CODE ###
+def main():
+	
+    
+main()
