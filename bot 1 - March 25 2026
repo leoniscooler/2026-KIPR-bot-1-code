@@ -3,57 +3,101 @@ import os, sys
 sys.path.append("/usr/lib")
 import _kipr as k
 
-k.enable_servos()
-
-#All are from looking from back of bot
-
-#motor port 2 is left motor
-#motor port 3 is right motor
-
-#pom sweeper is servo port 2
-
-#left grabber is servo port 1, 0 is bottom position, 2047 is top position
-#right grabber is servo port 0, 0 is top position, 2047 is bottom position
-
-### WHEEL MOVEMENT ###
-def forward(speed, msleep):
-	k.motor(2, speed)
-	k.motor(3, speed)
-	k.msleep(msleep)
-    
-def backwards(speed, msleep):
-	k.motor(2, -speed)
-	k.motor(3, -speed)
-	k.msleep(msleep)
-    
-def right(speed, msleep):
-	k.motor(2, speed)
-	k.motor(3,  0)
-	k.msleep(msleep)
-    
-def left(speed, msleep):
-	k.motor(2, 0)
-	k.motor(3, speed)
-	k.msleep(msleep)
-
-### POM SWEEPER ###
-def pom_sweep():
-	k.set_servo_position(2, 980)
+#basic info:
+#left motor= 2, right motor = 3 
+#left motor, backwards, right motor, forward
+#left servo=1, right servo=2
+#left servo, max height:0, minimum height:2047
+#right servo, max height:2047, minimum height:0
+#pom pusher, servo, port,3 max left=740, max right 2047
+#leon is cool
+def lift_up():
+	print("test")
+	for i in range(5, 2040, 500):
+		k.set_servo_position(3, i)
+		k.msleep(250)
 	k.msleep(1000)
+	i = 2040
+	while (i > 5):
+		k.set_servo_position(1, i)
+		k.msleep(250)
+		i = i - 500
+    stop()
+    
+def lift_down():
+	print("test")
+	for i in range(5, 2040, 500): #loops used to slow the movement of the claw down
+		k.set_servo_position(1, i)
+		k.msleep(250)
+	k.msleep(1000)
+	i = 2040
+	while (i > 5): #leon's amazing while loop
+		k.set_servo_position(3, i)
+		k.msleep(250)
+		i = i - 500
+    stop()
+
+def movementing(m1, m2, time):
+	k.motor(2, m1)
+	k.motor(3, m2)
+	k.msleep(time)
+    stop()
+
+def forward(power,duration):
+    k.motor(2,power)
+    k.motor(3,-power)
+    k.msleep(duration)
+    stop()
+    
+def right():
+    k.motor(1, 100)
+    k.motor(2, 100)
+    k.msleep(1500)
+    stop()
+    
+def left():
+    k.motor(1, -100)
+    k.motor(2, -100)
+    k.msleep(1500)
+    stop()
+
+
+def pom_push(a):#if a = 600, push, else, return
+	k.set_servo_position(2, a)
+	k.msleep(200)
+    stop()
+    
+def drop():
+    k.set_servo_position(1, 2047)
+    k.set_servo_position(3, 2047)
+    stop()
+    
+def reset():
 	k.set_servo_position(2, 2047)
-	k.msleep(1000)
+	k.set_servo_position(3, 2040)
+	k.set_servo_position(1, 5)
+    stop()
+
+def stop():
+	k.motor(2, 0)
+	k.motor(3, 0)
+	k.motor(1, 0)
+	k.motor(0, 0)
     
-### BOX COLLECTOR ###
-def grab_box():
-	k.set_servo_position(0, 2047)
-	k.set_servo_position(1, 0)
-    
-def drop_box():
-	k.set_servo_position(0, 0)
-	k.set_servo_position(1, 2047)
-    
-### MAIN CODE ###
+
 def main():
-	
+	reset()
+	forward(100, 1000)
+	pom_push(600)
+	pom_push(2047)
+	forward(100, 120)
+	forward(100, 500)
+	forward(100, 200)
+	pom_push(900)
+	pom_push(2047)
+	forward(100, 1700)
+	lift_down()
+
     
+
 main()
